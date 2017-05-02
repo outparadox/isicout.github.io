@@ -5,23 +5,23 @@
     
     <title>Do you know Dagger2? | Hexo</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.      Dagger2 为你分析这些">
+    <meta name="description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.">
 <meta name="keywords" content="Android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Do you know Dagger2?">
 <meta property="og:url" content="http://yoursite.com/2017/05/02/Dagger2/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.      Dagger2 为你分析这些">
+<meta property="og:description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.">
 <meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_general.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_qualifiers.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_scopes.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_dependency.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_subcomponent.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/subcomponent_builders.png">
-<meta property="og:updated_time" content="2017-05-02T08:08:06.000Z">
+<meta property="og:updated_time" content="2017-05-02T08:22:34.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Do you know Dagger2?">
-<meta name="twitter:description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.      Dagger2 为你分析这些">
+<meta name="twitter:description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.">
 <meta name="twitter:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_general.png">
     
 
@@ -256,7 +256,8 @@
         
             
             <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似<a href="https://github.com/square/retrofit" target="_blank" rel="external">Retrofit</a>的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说<a href="https://github.com/google/gson" target="_blank" rel="external">Gson</a>.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.     </p>
-<p>Dagger2 为你分析这些依赖库, 并且生成代码以帮助把他们连接在一起, 虽然还有其他的Java 依赖注入库, 但是他们的大多数在依赖XML的时候有很多限制, 在运行期间需要验证依赖关系的问题, 或者在启动期间导致性能上的损耗,  Dagger 2纯粹依赖于使用Java注释处理器和编译时检查来分析和验证依赖性. 它被认为是迄今为止效率最高的依赖注入框架之一.<br><a id="more"></a></p>
+<a id="more"></a>
+<p>Dagger2 为你分析这些依赖库, 并且生成代码以帮助把他们连接在一起, 虽然还有其他的Java 依赖注入库, 但是他们的大多数在依赖XML的时候有很多限制, 在运行期间需要验证依赖关系的问题, 或者在启动期间导致性能上的损耗,  Dagger 2纯粹依赖于使用Java注释处理器和编译时检查来分析和验证依赖性. 它被认为是迄今为止效率最高的依赖注入框架之一. </p>
 <h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>这里有使用Dagger2 的一些优点</p>
 <ul>
 <li><strong>简化对共享实例的访问.</strong> 举例来说, 正如<a href="https://github.com/JakeWharton/butterknife" target="_blank" rel="external">ButterKnife</a>声明对View, 事件处理, 资源的引用更为简单那种, Dagger2为获取共享实例的饮用提供了一种简单的方式. 比如,一旦我们在Dagger中声明类似<code>MyTwitterApiClient</code>或者<code>SharedPreferences</code>的单例的引用, 我们可以简单的使用 <code>@Inject</code>注解来声明字段</li>
@@ -359,7 +360,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj27abvii0000wn5jvsnhzqkv" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj27aej5c0001yb5j0wacn7r8" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
