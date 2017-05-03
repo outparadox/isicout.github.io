@@ -171,7 +171,7 @@ luhuanju:jni huanjulu$ ndk-build
 ```
 接下来你需要把生成的`app/src/main/libs` 下的平台的.so 文件复制到 `app/libs` 下
 
-![Qualified types](http://opd7g7we7.bkt.clouddn.com/WX20170503-180432@2x.png)
+![Qualified types](http://opd7g7we7.bkt.clouddn.com/WX20170503-181618@2x.png)
 
 6, `app/build.gradle` config seeting 
 
@@ -257,6 +257,10 @@ public class MainActivity extends AppCompatActivity {
 }
 
 ```
+
+here is source code 
+
+[https://github.com/isicout/JNIProgjectExample](https://github.com/isicout/JNIProgjectExample)
 
 
 
