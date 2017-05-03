@@ -243,26 +243,12 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <p>Android NDK  简单来说就是可以让你的应用使用natice-code语言, （比如C ,C++)的工具集</p>
+            <p><p>Android NDK  简单来说就是可以让你的应用使用natice-code语言, （比如C ,C++)的工具集</p>
 <p>一：what is the ndk </p>
-<p> Ndk 是允许你在你的工程中可以使用native-code (比如C or c++)的工具, 你可以利用ndk来构建你的natice-app<br> 正如我们知道的那样, Java 是构建android app 的默认语言, 然而, java 代码很容易被反编译, 但是这对C++ code 来说这并不简单, 并且c++ 代码更加高效</p>
-<p>二：why is ndk</p>
-<p>C++ 代码反编译困难 </p>
-<p>对于计算复杂量大的代码, C or C++ code can increase the performance of your app</p>
-<p>三：buliding native app</p>
-<p>如果你使用android studio 开发, 你需要下载安装ndk包, More info: <a href="https://developer.android.com/ndk/downloads/index.html?hl=zh-cn" target="_blank" rel="external">NDK</a></p>
-<p>1, 首先在代码中声明要在C++ code中要实现的native方法</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/**</span></div><div class="line"> * auth:huanjulu</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">AppCompatActivity</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstanceState)</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate(savedInstanceState);</div><div class="line">        setContentView(R.layout.activity_main);</div><div class="line">        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);</div><div class="line">        setSupportActionBar(toolbar);</div><div class="line">        ((TextView) findViewById(R.id.text)).setText(nativeMethod());</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onCreateOptionsMenu</span><span class="params">(Menu menu)</span> </span>&#123;</div><div class="line">        getMenuInflater().inflate(R.menu.menu_main, menu);</div><div class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">onOptionsItemSelected</span><span class="params">(MenuItem item)</span> </span>&#123;</div><div class="line">        <span class="comment">// Handle action bar item clicks here. The action bar will</span></div><div class="line">        <span class="comment">// automatically handle clicks on the Home/Up button, so long</span></div><div class="line">        <span class="comment">// as you specify a parent activity in AndroidManifest.xml.</span></div><div class="line">        <span class="keyword">int</span> id = item.getItemId();</div><div class="line"></div><div class="line">        <span class="comment">//noinspection SimplifiableIfStatement</span></div><div class="line">        <span class="keyword">if</span> (id == R.id.action_settings) &#123;</div><div class="line">            <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">return</span> <span class="keyword">super</span>.onOptionsItemSelected(item);</div><div class="line">    &#125;</div><div class="line">    <span class="comment">/**</span></div><div class="line">     * native code</div><div class="line">     *</div><div class="line">     * <span class="doctag">@return</span></div><div class="line">     */</div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">native</span> String <span class="title">nativeMethod</span><span class="params">()</span></span>;</div><div class="line"></div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>2, 对包含<code>native</code> 关键字方法的类, 生成<code>.h</code> 头文件</p>
-<p>进入到本地Java文件夹下 ,在Terminal input the follow commond</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">javah -d ../jni jniproject.ndkproject.MainActivity</div></pre></td></tr></table></figure>
-<p>first , <code>jniproject.ndkproject</code> is your package name  and <code>MainActivity</code> is the class name that contains native code</p>
-<p>and after that , you can see the <code>.h</code> file of  <code>MainActivity</code> class , it looks like :</p>
-<p><img src="http://opd7g7we7.bkt.clouddn.com/WX20170503-154642.png" alt="Qualified types"></p>
-<p>and we can looks what contents it contains</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">/* DO NOT EDIT THIS FILE - it is machine generated */</div><div class="line">#include &lt;jni.h&gt;</div><div class="line">/* Header for class jniproject_ndkproject_MainActivity */</div><div class="line"></div><div class="line">#ifndef _Included_jniproject_ndkproject_MainActivity</div><div class="line">#define _Included_jniproject_ndkproject_MainActivity</div><div class="line">#ifdef __cplusplus</div><div class="line">extern "C" &#123;</div><div class="line">#endif</div><div class="line">/*</div><div class="line"> * Class:     jniproject_ndkproject_MainActivity</div><div class="line"> * Method:    nativeMethod</div><div class="line"> * Signature: ()Ljava/lang/String;</div><div class="line"> */</div><div class="line">JNIEXPORT jstring JNICALL Java_jniproject_ndkproject_MainActivity_nativeMethod</div><div class="line">  (JNIEnv *, jobject);</div><div class="line"></div><div class="line">#ifdef __cplusplus</div><div class="line">&#125;</div><div class="line">#endif</div><div class="line">#endif</div></pre></td></tr></table></figure>
-
+<p> Ndk 是允许你在你的工程中可以使用native-code (比如C or c++)的工具, 你可以利用ndk来构建你的natice-app<br> 正如我们知道的那样, Java 是构建android app 的默认语言, 然而, java 代码很容易被反编译, 但是这对C++ code 来说这并不简单, 并且c++ 代码更加高效</p></p>
+            <p class="article-more-link">
+                <a href="/2017/05/02/Ndk/#more">Read More</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -272,7 +258,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/Ndk/" data-id="cj28otgrn0001kv5ju1ngqjft" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/Ndk/" data-id="cj28tp1zj0001tn5jfoayvhg1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -395,7 +381,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/hello-world/" data-id="cj28otgru0003kv5jbar5yyyj" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/hello-world/" data-id="cj28tp1zn0003tn5j72f0vt6g" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -523,7 +509,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj28otgrj0000kv5jnd3u90ym" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj28tp1zf0000tn5j0j2yfzqd" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
