@@ -186,10 +186,12 @@ public Mat onCameraFrame(CvCameraViewFrame inputFrame) {
 
 ```
 
-dont forget the permission of camera in your `AndroidMainfest.xml` 
+这个是你使用opencv Java code 很重要的一个方法, 它接受相机的每帧原始数据, 并且你可以在这个方法内做所有的图片片处理工作, 它返回 `Mat `  作为相机要接受的帧数据.
 
 it is the best importment method for you use opencv , this will receiver the vedio as frames and you can do all the image processing inside this method and return a Mat thie this image  :)
 
+
+dont forget the permission of camera in your `AndroidMainfest.xml` 
 
 ``` java
 <?xml version="1.0" encoding="utf-8"?>
