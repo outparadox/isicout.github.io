@@ -9,9 +9,13 @@ this article is ready for a people  who has some knowledge on android develop an
 
 一: what is opencv 
 
-In simple terms , opencv is a open source library about Cross-platform computer vision , 它包含了何种图像识别算法
+简单的来说,  opencn 是跨平台的计算机视觉开源库, 它包含了何种图像识别算法
+
+In simple terms , opencv is a open source library about Cross-platform computer vision 
 
 [here is opencv ](https://developer.android.com/ndk/downloads/index.html?hl=zh-cn)
+
+<!-- more -->
 
 二: Setting up OpenCv Library inside Android 
 
