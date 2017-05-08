@@ -1,9 +1,10 @@
+thumbnail: https://cdn-images-1.medium.com/max/2000/1*LgaStRUic1JjYfhdYplClg.jpeg
+banner: https://cdn-images-1.medium.com/max/2000/1*LgaStRUic1JjYfhdYplClg.jpeg
 ---
 title: Opencv In Android
 date: 2017-05-06 15:17:39
 tags: [Opencv, NDK, JNI, Android, C++]
 ---
-
 
 this article is ready for a people  who has some knowledge on android develop and a newer about how use opencv SDK in android .
 
