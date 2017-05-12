@@ -7,8 +7,7 @@ tags: Android
 在开发中, 我们有时候需要把某些资源文件打包到apk中, 在程序需要的时候, 读取它们或者把它们放入sd card
 
 in my project, i need to copy my source file to sd card ,  i have `pricetag_svm.xml` file under  my project fiolder`app/src/assets` and here is my code :
-
-
+<!-- more -->
 ``` java
     private void copyAssets(String file) throws IOException {
         AssetManager assetManager = getAssets();
