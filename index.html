@@ -209,15 +209,11 @@
         
         <div class="article-entry" itemprop="articleBody">
         
-            
-            <p>在开发中, 我们有时候需要把某些资源文件打包到apk中, 在程序需要的时候, 读取它们或者把它们放入sd card</p>
-<p>in my project, i need to copy my source file to sd card ,  i have <code>pricetag_svm.xml</code> file under  my project fiolder<code>app/src/assets</code> and here is my code :</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">copyAssets</span><span class="params">(String file)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    AssetManager assetManager = getAssets();</div><div class="line">    InputStream in = assetManager.open(file);</div><div class="line"></div><div class="line">    <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</div><div class="line"></div><div class="line">        OutputStream out = <span class="keyword">null</span>;</div><div class="line"></div><div class="line">        File outFile = <span class="keyword">new</span> File(getExternalFilesDir(<span class="keyword">null</span>), file);</div><div class="line"></div><div class="line">        <span class="keyword">if</span> (!outFile.exists()) &#123;</div><div class="line"></div><div class="line">            Log.d(<span class="string">"TAG"</span>, <span class="string">"outFile path"</span> + outFile.getAbsolutePath());</div><div class="line">            out = <span class="keyword">new</span> FileOutputStream(outFile);</div><div class="line"></div><div class="line">            copyFile(in, out);</div><div class="line">            <span class="keyword">if</span> (in != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    in.close();</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    <span class="comment">// NOOP</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> (out != <span class="keyword">null</span>) &#123;</div><div class="line">                <span class="keyword">try</span> &#123;</div><div class="line">                    out.close();</div><div class="line">                &#125; <span class="keyword">catch</span> (IOException e) &#123;</div><div class="line">                    <span class="comment">// NOOP</span></div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">copyFile</span><span class="params">(InputStream in, OutputStream out)</span> <span class="keyword">throws</span> IOException </span>&#123;</div><div class="line">    <span class="keyword">byte</span>[] buffer = <span class="keyword">new</span> <span class="keyword">byte</span>[<span class="number">1024</span>];</div><div class="line">    <span class="keyword">int</span> read;</div><div class="line">    <span class="keyword">while</span> ((read = in.read(buffer)) != -<span class="number">1</span>) &#123;</div><div class="line">        out.write(buffer, <span class="number">0</span>, read);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>so , at the right time of your needs , just </p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">copyAssets(<span class="string">"pricetag_svm.xml"</span>);</div></pre></td></tr></table></figure>
-<p>after this ,you will read this source file in your decice’s sd card </p>
-<p><code>Storage/Android/data/(your application package name)/files</code> </p>
-
+            <p><p>在开发中, 我们有时候需要把某些资源文件打包到apk中, 在程序需要的时候, 读取它们或者把它们放入sd card</p>
+<p>in my project, i need to copy my source file to sd card ,  i have <code>pricetag_svm.xml</code> file under  my project fiolder<code>app/src/assets</code> and here is my code :<br></p>
+            <p class="article-more-link">
+                <a href="/2017/05/12/Android-拷贝资源文件到sd-card/#more">Read More</a>
+            </p>
         
         </div>
         <footer class="article-footer">
@@ -227,7 +223,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/12/Android-拷贝资源文件到sd-card/" data-id="cj2lbnlwu0001s65jx7dpl5pq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/12/Android-拷贝资源文件到sd-card/" data-id="cj2lbpv9c0000tn5jgpajpgmg" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -353,7 +349,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/09/ArrayList-LinkedList源码分析/" data-id="cj2lbnlwq0000s65junuamiya" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/09/ArrayList-LinkedList源码分析/" data-id="cj2lbpv9g0001tn5j48ajbw65" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -479,7 +475,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/08/detection-the-largest-retangle/" data-id="cj2lbnlx8000as65je1qer1ii" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/08/detection-the-largest-retangle/" data-id="cj2lbpv9q0009tn5jgwrmejby" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -621,7 +617,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/06/Opencv-In-Android/" data-id="cj2lbnlx20005s65jt3yjfuu1" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/06/Opencv-In-Android/" data-id="cj2lbpv9p0008tn5jos767jac" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -747,7 +743,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/04/Jenkins/" data-id="cj2lbnlwy0003s65jz98b2m3d" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/04/Jenkins/" data-id="cj2lbpv9m0004tn5j2xkani5h" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -877,7 +873,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/Ndk/" data-id="cj2lbnlx50008s65jhasrjnzq" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/Ndk/" data-id="cj2lbpv9n0005tn5jdkvsm106" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1000,7 +996,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/hello-world/" data-id="cj2lbnlx30007s65j6u64umfz" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/hello-world/" data-id="cj2lbpv9u000btn5j0djejhei" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
@@ -1128,7 +1124,7 @@
 
 </div>
 
-    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj2lbnlx00004s65jqwtjn2fl" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj2lbpv9k0003tn5j1don15m2" class="article-share-link"><i class="fa fa-share"></i>Share</a>
 <script>
     (function ($) {
         // Prevent duplicate binding
