@@ -17,9 +17,6 @@ tags:  [Opencv, Android,  C++, NDK]
 #include <opencv2/opencv.hpp>
 #include <bits/stdc++.h>
 #include <android/log.h>
-
-<!-- more -->
-
 #define  LOG_TAG    "JNI_PART"
 #define LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG, __VA_ARGS__)
 #define LOGD(...)  __android_log_print(ANDROID_LOG_DEBUG,LOG_TAG, __VA_ARGS__)
@@ -29,7 +26,8 @@ tags:  [Opencv, Android,  C++, NDK]
 using namespace cv;
 using namespace std;
 extern "C" {
-jstring Java_com_martin_ads_testopencv_MainActivity_stringFromJNI(
+<!-- more -->
+jstring Java_com_martin_huanjulu_testopencv_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {
     std::string hello = "Hello from C++";
