@@ -5,8 +5,11 @@ tags:  [Opencv, Android,  C++, NDK]
 ---
 
 
-``` c++ 
 
+
+
+
+``` c++ 
 /**
  * auth:huanjulu
  */
@@ -14,6 +17,8 @@ tags:  [Opencv, Android,  C++, NDK]
 #include <opencv2/opencv.hpp>
 #include <bits/stdc++.h>
 #include <android/log.h>
+
+<!-- more -->
 
 #define  LOG_TAG    "JNI_PART"
 #define LOGI(...)  __android_log_print(ANDROID_LOG_INFO,LOG_TAG, __VA_ARGS__)
