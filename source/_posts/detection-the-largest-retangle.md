@@ -4,13 +4,19 @@ date: 2017-05-08 18:42:01
 tags:  [Opencv, Android,  C++, NDK]
 ---
 
-
-
-
-
+using namespace cv;
+using namespace std;
+extern "C" {
+jstring Java_com_martin_huanjulu_testopencv_MainActivity_stringFromJNI(
+        JNIEnv *env,
+        jobject /* this */) {
+    std::string hello = "Hello from C++";
+    return env->NewStringUTF(hello.c_str());
+}
+<!-- more -->
 
 ``` c++ 
-/**
+/*
  * auth:huanjulu
  */
 #include <jni.h>
@@ -26,7 +32,7 @@ tags:  [Opencv, Android,  C++, NDK]
 using namespace cv;
 using namespace std;
 extern "C" {
-<!-- more -->
+
 jstring Java_com_martin_huanjulu_testopencv_MainActivity_stringFromJNI(
         JNIEnv *env,
         jobject /* this */) {

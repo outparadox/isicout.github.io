@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    
+    <title>Do you know Dagger2? | Hexo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+    <meta name="description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.">
+<meta name="keywords" content="Android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Do you know Dagger2?">
+<meta property="og:url" content="http://yoursite.com/2017/05/02/Dagger2/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.">
+<meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_general.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_qualifiers.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_scopes.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_dependency.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_subcomponent.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/subcomponent_builders.png">
+<meta property="og:updated_time" content="2017-05-02T08:22:34.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Do you know Dagger2?">
+<meta name="twitter:description" content="概述很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似Retrofit的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说Gson.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_general.png">
+    
+
+    
+        <link rel="alternate" href="/" title="Hexo" type="application/atom+xml" />
+    
+
+    
+
+    <link rel="stylesheet" href="/libs/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/libs/open-sans/styles.css">
+    <link rel="stylesheet" href="/libs/source-code-pro/styles.css">
+
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="/libs/jquery/2.1.3/jquery.min.js"></script>
+    
+    
+        <link rel="stylesheet" href="/libs/lightgallery/css/lightgallery.min.css">
+    
+    
+        <link rel="stylesheet" href="/libs/justified-gallery/justifiedGallery.min.css">
+    
+    
+    
+    
+
+
+</head>
+
+<body>
+    <div id="container">
+        <header id="header">
+    <div id="header-main" class="header-inner">
+        <div class="outer">
+            <a href="/" id="logo">
+                <i class="logo"></i>
+                <span class="site-title">Hexo</span>
+            </a>
+            <nav id="main-nav">
+                
+                    <a class="main-nav-link" href="/.">Home</a>
+                
+                    <a class="main-nav-link" href="/archives">Archives</a>
+                
+                    <a class="main-nav-link" href="/categories">Categories</a>
+                
+                    <a class="main-nav-link" href="/tags">Tags</a>
+                
+                    <a class="main-nav-link" href="/about">About</a>
+                
+            </nav>
+            
+                
+                <nav id="sub-nav">
+                    <div class="profile" id="profile-nav">
+                        <a id="profile-anchor" href="javascript:;">
+                            <img class="avatar" src="/css/images/WechatIMG2.jpeg" />
+                            <i class="fa fa-caret-down"></i>
+                        </a>
+                    </div>
+                </nav>
+            
+            <div id="search-form-wrap">
+
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit"> </button><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+</div>
+        </div>
+    </div>
+    <div id="main-nav-mobile" class="header-sub header-inner">
+        <table class="menu outer">
+            <tr>
+                
+                    <td><a class="main-nav-link" href="/.">Home</a></td>
+                
+                    <td><a class="main-nav-link" href="/archives">Archives</a></td>
+                
+                    <td><a class="main-nav-link" href="/categories">Categories</a></td>
+                
+                    <td><a class="main-nav-link" href="/tags">Tags</a></td>
+                
+                    <td><a class="main-nav-link" href="/about">About</a></td>
+                
+                <td>
+                    
+    <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><input type="hidden" name="sitesearch" value="http://yoursite.com"></form>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+</header>
+
+        <div class="outer">
+            
+                
+
+<aside id="profile">
+    <div class="inner profile-inner">
+        <div class="base-info profile-block">
+            <img id="avatar" src="/css/images/WechatIMG2.jpeg" />
+            <h2 id="name">PARADOX</h2>
+            <h3 id="title">TECH FULL STACK ROAD &amp; Deceloper and Designer 🌹</h3>
+            <span id="location"><i class="fa fa-map-marker"></i>Singapore, Singapore</span>
+            <a id="follow" target="_blank" href="https://github.com/isicout">FOLLOW</a>
+        </div>
+        <div class="article-info profile-block">
+            <div class="article-info-block">
+                8
+                <span>posts</span>
+            </div>
+            <div class="article-info-block">
+                9
+                <span>tags</span>
+            </div>
+        </div>
+        
+        <div class="profile-block social-links">
+            <table>
+                <tr>
+                    
+                    
+                    <td>
+                        <a href="https://github.com/isicout" target="_blank" title="github" class=tooltip>
+                            <i class="fa fa-github"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="twitter" class=tooltip>
+                            <i class="fa fa-twitter"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="facebook" class=tooltip>
+                            <i class="fa fa-facebook"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="dribbble" class=tooltip>
+                            <i class="fa fa-dribbble"></i>
+                        </a>
+                    </td>
+                    
+                    <td>
+                        <a href="/" target="_blank" title="rss" class=tooltip>
+                            <i class="fa fa-rss"></i>
+                        </a>
+                    </td>
+                    
+                </tr>
+            </table>
+        </div>
+        
+    </div>
+</aside>
+
+            
+            <section id="main"><article id="post-Dagger2" class="article article-type-post" itemscope itemprop="blogPost">
+    <div class="article-inner">
+        
+        
+            <header class="article-header">
+                
+    
+        <h1 class="article-title" itemprop="name">
+            Do you know Dagger2?
+        </h1>
+    
+
+                
+                    <div class="article-meta">
+                        
+    <div class="article-date">
+        <i class="fa fa-calendar"></i>
+        <a href="/2017/05/02/Dagger2/">
+            <time datetime="2017-05-02T06:13:26.000Z" itemprop="datePublished">2017-05-02</time>
+        </a>
+    </div>
+
+
+                        
+                        
+    <div class="article-tag">
+        <i class="fa fa-tag"></i>
+        <a class="tag-link" href="/tags/Android/">Android</a>
+    </div>
+
+                    </div>
+                
+            </header>
+        
+        
+        <div class="article-entry" itemprop="articleBody">
+        
+            
+            <h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>很多Android Apps通常依赖于其他依赖库的实例化对象, 举例来说,  一个Twitter客户端可能使用类似<a href="https://github.com/square/retrofit" target="_blank" rel="external">Retrofit</a>的网络依赖库来进行构建, 要使用这个库, 你需要添加解析的库，比如说<a href="https://github.com/google/gson" target="_blank" rel="external">Gson</a>.  此外,  那些实现认证或者缓存的类可能需要访问shared preferences和其他公共的存储单元，需要首先实例化他们并且创建固有的依赖链.     </p>
+<a id="more"></a>
+<p>Dagger2 为你分析这些依赖库, 并且生成代码以帮助把他们连接在一起, 虽然还有其他的Java 依赖注入库, 但是他们的大多数在依赖XML的时候有很多限制, 在运行期间需要验证依赖关系的问题, 或者在启动期间导致性能上的损耗,  Dagger 2纯粹依赖于使用Java注释处理器和编译时检查来分析和验证依赖性. 它被认为是迄今为止效率最高的依赖注入框架之一. </p>
+<h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><p>这里有使用Dagger2 的一些优点</p>
+<ul>
+<li><strong>简化对共享实例的访问.</strong> 举例来说, 正如<a href="https://github.com/JakeWharton/butterknife" target="_blank" rel="external">ButterKnife</a>声明对View, 事件处理, 资源的引用更为简单那种, Dagger2为获取共享实例的饮用提供了一种简单的方式. 比如,一旦我们在Dagger中声明类似<code>MyTwitterApiClient</code>或者<code>SharedPreferences</code>的单例的引用, 我们可以简单的使用 <code>@Inject</code>注解来声明字段</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">   <span class="meta">@Inject</span> MyTwitterApiClient mTwitterApiClient;</div><div class="line">   <span class="meta">@Inject</span> SharedPreferences sharedPreferences;</div><div class="line"></div><div class="line">   <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstance)</span> </span>&#123;</div><div class="line">       <span class="comment">// assign singleton instances to fields</span></div><div class="line">       InjectorClass.inject(<span class="keyword">this</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<ul>
+<li><p><strong>更容易配制复杂的依赖.</strong>  那些你经常创建的对象有一个隐式的过程. Dagger2 遍历依赖图表并且生成以便于理解且追踪代码, 同时把你从编写大量的模版代码的工作中解救出来, 你正常的需要手工编写代码以获取引用并将他们作为依赖传递给其他对象. 它也有助于简化重构, 因为以可以专注于构建哪些模块而不是关注于他们被创建的顺序. </p>
+</li>
+<li><p><strong>单元和集成变得更为轻松.</strong> 因为依赖图表是由我们自己创建的, 我们能够简单的切换模块，作出网络响应并且模拟这种行为 </p>
+</li>
+<li><p><strong>实例作用域.</strong> 你不仅更为简单的管理整个应用程序的生命周期, 你还可以利用Dagger2 声明更为简短的生命周期的实例(比如, 绑定用户的seesion, Activity 的生命周期, etc.). </p>
+</li>
+</ul>
+<h2 id="设置"><a href="#设置" class="headerlink" title="设置"></a>设置</h2><p>Android studio通常情况下不会允许你连接到生成Dagger2的代码作为合法的类,  因为他们通常情况下不会添加到资源路径, 但是通过添加<code>android-apt</code> 插件能够添加这些文件到IDE路径，并且使你对这些文件有更多的可见性</p>
+<p>由于Android Gradle plugin 2.2注释处理是内置的, android-apt并不被受待见. <code>android-apt</code>不支持新的 <code>jack</code> </p>
+<p>在你的<code>app/build.gradle</code> 文件中添加以下3行的申请说明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    <span class="comment">// apt command comes from the android-apt plugin</span></div><div class="line">    apt <span class="string">'com.google.dagger:dagger-compiler:2.8'</span></div><div class="line">    compile <span class="string">'com.google.dagger:dagger:2.8'</span></div><div class="line">    provided <span class="string">'javax.annotation:jsr250-api:1.0'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你正在使用android gradle 2.3 插件, 你可以使用<code>annotationProcessor</code> 来代替apt-plugin:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">dependencies &#123;</div><div class="line">    <span class="comment">// apt command comes from the android-apt plugin</span></div><div class="line">    compile <span class="string">"com.google.dagger:dagger:2.9"</span></div><div class="line">    annotationProcessor <span class="string">"com.google.dagger:dagger-compiler:2.9"</span></div><div class="line">    provided <span class="string">'javax.annotation:jsr250-api:1.0'</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>要注意的是<code>provided</code>关键字仅仅在编译期间被用来作为依赖关系, Dagger生成用于创建源代码中定义的类的依赖图的代码. 这些类在编译期间被添加到IDE类路径中. <code>annotationProcessor</code>关键字被Android gradle插件所识别并且不会把这些类他们添加到类路径中, 它们仅仅被用来注释处理, 以防止别人意外的引用他们. </p>
+<h2 id="创建单例"><a href="#创建单例" class="headerlink" title="创建单例"></a>创建单例</h2><p><img src="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_general.png" alt="Creatint singletons"></p>
+<p>很简单的例子表明如何使用Dagger2 集中你所有创建的单例.<br>类似于下面这样, 假设在你的Twitter客户端中你从没有使用过任何类型的的依赖注入框架写代码</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</div><div class="line"></div><div class="line"><span class="comment">// Enable caching for OkHttp</span></div><div class="line"><span class="keyword">int</span> cacheSize = <span class="number">10</span> * <span class="number">1024</span> * <span class="number">1024</span>; <span class="comment">// 10 MiB</span></div><div class="line">Cache cache = <span class="keyword">new</span> Cache(getApplication().getCacheDir(), cacheSize);</div><div class="line">client.setCache(cache);</div><div class="line"></div><div class="line"><span class="comment">// Used for caching authentication tokens</span></div><div class="line">SharedPreferences sharedPrefeences = PreferenceManager.getDefaultSharedPreferences(<span class="keyword">this</span>);</div><div class="line"></div><div class="line"><span class="comment">// Instantiate Gson</span></div><div class="line">Gson gson = <span class="keyword">new</span> GsonBuilder().create();</div><div class="line">GsonConverterFactory converterFactory = GsonConverterFactory.create(gson);</div><div class="line"></div><div class="line"><span class="comment">// Build Retrofit</span></div><div class="line">Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</div><div class="line">                                .baseUrl(<span class="string">"https://api.github.com"</span>)</div><div class="line">                                .addConverterFactory(converterFactory)</div><div class="line">                                .client(client)  <span class="comment">// custom client</span></div><div class="line">                                .build();</div></pre></td></tr></table></figure>
+<h2 id="声明你的单例"><a href="#声明你的单例" class="headerlink" title="声明你的单例"></a>声明你的单例</h2><p>你需要通过创建一个Dagger2 moudle来明确哪些对象应该被包含作为依赖链的一部分. 举例来说, 如果我们希望使一个单独的<code>Retrofit</code>单例绑定到整个应用程序的生命周期,  并且对我们所有的activity和fragment都是可用的, 我们首先要让Dagger 知道可以提供一个<code>Retrofit</code>单例</p>
+<p>因为我们希望设置caching, 我们需要一份Application Context上下文环境. 我们的第一个Dagger模块<code>AppModule.java</code>将被用来提供此引用, 我们还需要声明带有<code>@Provides</code>注解的方法来告诉Dagger这个方法是返回类型为<code>Application</code>的构造器: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">AppModule</span> </span>&#123;</div><div class="line"></div><div class="line">    Application mApplication;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">AppModule</span><span class="params">(Application application)</span> </span>&#123;</div><div class="line">        mApplication = application;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@Singleton</span></div><div class="line">    <span class="function">Application <span class="title">providesApplication</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> mApplication;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们创建一个名为<code>NetModule.java</code>并且使用<code>@Module</code>标注的类来告诉Dagger在可用方法的范围内寻找来作为实例的提供者</p>
+<p><code>@Singleton</code>注解同样告诉Dagger编译器这个实例在整个应用生命周期中应该仅仅被创建一次, 在以下的例子中, 我们指定<code>SharedPreferences</code> <code>Gson</code> <code>Cache</code> <code>OkHttpClient</code> <code>Retrofit</code> 作为可以用作依赖列表一部分的返回类型</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">NetModule</span> </span>&#123;</div><div class="line"></div><div class="line">    String mBaseUrl;</div><div class="line"></div><div class="line">    <span class="comment">// Constructor needs one parameter to instantiate.  </span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">NetModule</span><span class="params">(String baseUrl)</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.mBaseUrl = baseUrl;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// Dagger will only look for methods annotated with @Provides</span></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@Singleton</span></div><div class="line">    <span class="comment">// Application reference must come from AppModule.class</span></div><div class="line">    <span class="function">SharedPreferences <span class="title">providesSharedPreferences</span><span class="params">(Application application)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> PreferenceManager.getDefaultSharedPreferences(application);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@Singleton</span></div><div class="line">    <span class="function">Cache <span class="title">provideOkHttpCache</span><span class="params">(Application application)</span> </span>&#123; </div><div class="line">        <span class="keyword">int</span> cacheSize = <span class="number">10</span> * <span class="number">1024</span> * <span class="number">1024</span>; <span class="comment">// 10 MiB</span></div><div class="line">        Cache cache = <span class="keyword">new</span> Cache(application.getCacheDir(), cacheSize);</div><div class="line">        <span class="keyword">return</span> cache;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">   <span class="meta">@Provides</span> </div><div class="line">   <span class="meta">@Singleton</span></div><div class="line">   <span class="function">Gson <span class="title">provideGson</span><span class="params">()</span> </span>&#123;  </div><div class="line">       GsonBuilder gsonBuilder = <span class="keyword">new</span> GsonBuilder();</div><div class="line">       gsonBuilder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);</div><div class="line">       <span class="keyword">return</span> gsonBuilder.create();</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="meta">@Provides</span></div><div class="line">   <span class="meta">@Singleton</span></div><div class="line">   <span class="function">OkHttpClient <span class="title">provideOkHttpClient</span><span class="params">(Cache cache)</span> </span>&#123;</div><div class="line">      OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</div><div class="line">      client.setCache(cache);</div><div class="line">      <span class="keyword">return</span> client;</div><div class="line">   &#125;</div><div class="line"></div><div class="line">   <span class="meta">@Provides</span></div><div class="line">   <span class="meta">@Singleton</span></div><div class="line">   <span class="function">Retrofit <span class="title">provideRetrofit</span><span class="params">(Gson gson, OkHttpClient okHttpClient)</span> </span>&#123;</div><div class="line">      Retrofit retrofit = <span class="keyword">new</span> Retrofit.Builder()</div><div class="line">                .addConverterFactory(GsonConverterFactory.create(gson))</div><div class="line">                .baseUrl(mBaseUrl)</div><div class="line">                .client(okHttpClient)</div><div class="line">                .build();</div><div class="line">        <span class="keyword">return</span> retrofit;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意这个方法名 (i.e. provideGson(), provideRetrofit(), etc)可以起任何名. 使用<code>@Provides</code>注解的返回值类型被用来将此实例与其他任何相同类型的moudle相关联, <code>@Singleton</code>注解被用来像Dagger描述在整个应用程序生命周期期间仅仅初始化一次</p>
+<p><code>Retrofit</code>的实例的同时依赖于<code>Gson</code>和<code>OkHttpClient</code>实例, 所以我们可以在同一个类中声明另外一个方法以获取这两个类型. 在这个方法中<code>@Provides</code>注解和这两个参数将会使得Dagger 意识到这里有<code>Gson</code>和<code>OkHttpClient</code>的依赖以创建<code>Retrofit</code>的实例</p>
+<h2 id="声明注入目标"><a href="#声明注入目标" class="headerlink" title="声明注入目标"></a>声明注入目标</h2><p>Dagger为你的activitys, services, 或fragments提供了一种简单的通过使用<code>@Inject</code>注解注入字段并且调用<code>inject()</code>方法来分配引用, 调用<code>inject()</code>方法将会使Dagger2 在依赖图谱中尝试寻找一个相匹配的返回类型来定位单例. 如果找到, 它将分配各自对应字段的引用. 比如, 在下面的例子中, 它会尝试寻找返回类型为<code>MyTwitterApiClient</code>和<code>SharedPreferences</code>的提供器(provider)</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MainActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">   <span class="meta">@Inject</span> MyTwitterApiClient mTwitterApiClient;</div><div class="line">   <span class="meta">@Inject</span> SharedPreferences sharedPreferences;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstance)</span> </span>&#123;</div><div class="line">       <span class="comment">// assign singleton instances to fields</span></div><div class="line">       InjectorClass.inject(<span class="keyword">this</span>);</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<p>Dagger2 中使用的注入器类被称为 component组件, 它为我们的activitys, services, 或则fragments分配引用以连接我们之前声明的单例, 我们同样需要一个<code>@Component</code>注解声明的类, 可以添加的activitys, services, 或则fragments应该在这个类中单独的使用<code>inject()</code>方法声明:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="meta">@Component</span>(modules=&#123;AppModule.class, NetModule.class&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NetComponent</span> </span>&#123;</div><div class="line">   <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity activity)</span></span>;</div><div class="line">   <span class="comment">// void inject(MyFragment fragment);</span></div><div class="line">   <span class="comment">// void inject(MyService service);</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>注意这些类并不足以作为注入的目标, Dagger2 依赖相匹配的类, 你必须明确指明那个类应该被声明在内, (这里有一些<a href="https://blog.gouline.net/dagger-2-even-sharper-less-square-b52101863542#.vgmua0fkm" target="_blank" rel="external">建议</a>来解决这个问题, 但是这样做代码可能追踪更加困难相比简单的定义它们 )</p>
+<h2 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h2><p>一件重要Dagger2的方面是, 这个库为标注了<code>@Component</code>的接口类生成代码, 你可以使用前缀为<code>@Dagger</code>(i.e. DaggerTwitterApiComponent.java)的类, 它将负责实例化我们的依赖图谱中的一个实例, 并且用它执行<code>@Inject</code>注解字段的注入工作. 请看(setup guide)[<a href="https://github.com/codepath/android_guides/wiki/Dependency-Injection-with-Dagger-2#setup" target="_blank" rel="external">https://github.com/codepath/android_guides/wiki/Dependency-Injection-with-Dagger-2#setup</a>].</p>
+<h2 id="实例化组件"><a href="#实例化组件" class="headerlink" title="实例化组件"></a>实例化组件</h2><p>我们应该在<code>Application</code>的类中做所有工作, 因为这些实例在整个应用程序的生命周期中仅仅被声明一次</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyApp</span> <span class="keyword">extends</span> <span class="title">Application</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> NetComponent mNetComponent;</div><div class="line"></div><div class="line">    <span class="meta">@Override</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">super</span>.onCreate();</div><div class="line"></div><div class="line">        <span class="comment">// Dagger%COMPONENT_NAME%</span></div><div class="line">        mNetComponent = DaggerNetComponent.builder()</div><div class="line">                <span class="comment">// list of modules that are part of this component need to be created here too</span></div><div class="line">                .appModule(<span class="keyword">new</span> AppModule(<span class="keyword">this</span>)) <span class="comment">// This also corresponds to the name of your module: %component_name%Module</span></div><div class="line">                .netModule(<span class="keyword">new</span> NetModule(<span class="string">"https://api.github.com"</span>))</div><div class="line">                .build();</div><div class="line"></div><div class="line">        <span class="comment">// If a Dagger 2 component does not have any constructor arguments for any of its modules,</span></div><div class="line">        <span class="comment">// then we can use .create() as a shortcut instead:</span></div><div class="line">        <span class="comment">//  mNetComponent = com.codepath.dagger.components.DaggerNetComponent.create();</span></div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> NetComponent <span class="title">getNetComponent</span><span class="params">()</span> </span>&#123;</div><div class="line">       <span class="keyword">return</span> mNetComponent;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果不能没有Dagger component组件的引用, 你要确保重构项目(在AndroidStudio中, select Build &gt; Rebuild Project)</p>
+<p>因为我们覆写了默认的<code>Application</code>类, 我们同样修改应用程序<code>name</code>为<code>MyApp</code>, 这样, 你的应用程序将使用这个Applicaiton 类来处理最初的实例. </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;application</div><div class="line">      android:allowBackup=<span class="string">"true"</span></div><div class="line">      android:name=<span class="string">".MyApp"</span>&gt;</div></pre></td></tr></table></figure>
+<p>在我们Activity的内部, 我们只需要调用<code>inject()</code>方法就可以简单的访问这些组件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyActivity</span> <span class="keyword">extends</span> <span class="title">Activity</span> </span>&#123;</div><div class="line">  <span class="meta">@Inject</span> OkHttpClient mOkHttpClient;</div><div class="line">  <span class="meta">@Inject</span> SharedPreferences sharedPreferences;</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">onCreate</span><span class="params">(Bundle savedInstance)</span> </span>&#123;</div><div class="line">        <span class="comment">// assign singleton instances to fields</span></div><div class="line">        <span class="comment">// We need to cast to `MyApp` in order to get the right method</span></div><div class="line">        ((MyApp) getApplication()).getNetComponent().inject(<span class="keyword">this</span>);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h2 id="限制类型"><a href="#限制类型" class="headerlink" title="限制类型"></a>限制类型</h2><p><img src="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_qualifiers.png" alt="Qualified types"></p>
+<p>如果我们需要同一返回类型的两个不同对象, 我们可以使用<code>@Named</code>限定注解, 你需要在你提供单例的地方(<code>@Provides</code> annotation)和注入它们的地方(<code>@Inject</code> annotations)同时声明它们:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Provides</span> <span class="meta">@Named</span>(<span class="string">"cached"</span>)</div><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="function">OkHttpClient <span class="title">provideOkHttpClient</span><span class="params">(Cache cache)</span> </span>&#123;</div><div class="line">    OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</div><div class="line">    client.setCache(cache);</div><div class="line">    <span class="keyword">return</span> client;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="meta">@Provides</span> <span class="meta">@Named</span>(<span class="string">"non_cached"</span>) <span class="meta">@Singleton</span></div><div class="line"><span class="function">OkHttpClient <span class="title">provideOkHttpClient</span><span class="params">()</span> </span>&#123;</div><div class="line">    OkHttpClient client = <span class="keyword">new</span> OkHttpClient();</div><div class="line">    <span class="keyword">return</span> client;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当你注入这些单例的时候, 你同样需要<code>@Named</code>注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Inject</span> <span class="meta">@Named</span>(<span class="string">"cached"</span>) OkHttpClient client;</div><div class="line"><span class="meta">@Inject</span> <span class="meta">@Named</span>(<span class="string">"non_cached"</span>) OkHttpClient client2;</div></pre></td></tr></table></figure>
+<p><code>@Named</code>是Dagger预先定义的限定注解, 你可以很好的创建你自己的限定注解</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Qualifier</span></div><div class="line"><span class="meta">@Documented</span></div><div class="line"><span class="meta">@Retention</span>(RUNTIME)</div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> DefaultPreferences &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="作用域"><a href="#作用域" class="headerlink" title="作用域"></a>作用域</h2><p><img src="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_scopes.png" alt="Scopes"></p>
+<p>在Dagger2, 你可以声明Component组件通过声明自定义的范围如何封装. 举例来说, 你可以创建一个仅仅在activity或者fragment生命周期运行期间的作用域. 你可以创建只映射到用户身份验证会话的作用域. </p>
+<p>利用作用域允许我们要么创建依赖组件要么创建子组件, 上面的例子表明我们所使用的<code>@Singleton</code>注解是伴随应用程序的整个生命周期, 我们同样依赖于一个主要的Dagger component组件.</p>
+<p>如果我们希望拥有一个并不需要常驻内存中的多个Component组件(i.e. 依赖于activity或者fragment生命周期, 甚至依赖于用户的登录状态的Component组件), 我们可以创建相关的组件活着子组件, 在任何一种情况下, 都会为你封装代码提供一种方式. 我们将在下文中看到如何同时使用它们. </p>
+<p>这里有使用这些方法的几点考虑:</p>
+<ul>
+<li><strong>相关的组件要求父组件明确列出哪些依赖可以注入, 而子组件没有</strong> 对于父组件来说, 你需要通过指明类型和方法, 以想子组件暴露它们</li>
+</ul>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// parent component</span></div><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="meta">@Component</span>(modules=&#123;AppModule.class, NetModule.class&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NetComponent</span> </span>&#123;</div><div class="line">    <span class="comment">// remove injection methods if downstream modules will perform injection</span></div><div class="line"></div><div class="line">    <span class="comment">// downstream components need these exposed</span></div><div class="line">    <span class="comment">// the method name does not matter, only the return type</span></div><div class="line">    <span class="function">Retrofit <span class="title">retrofit</span><span class="params">()</span></span>; </div><div class="line">    <span class="function">OkHttpClient <span class="title">okHttpClient</span><span class="params">()</span></span>;</div><div class="line">    <span class="function">SharedPreferences <span class="title">sharedPreferences</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你忘记添加这行代码, 你将要看到一个关于注入目标丢失的错误. 类似于private/public变量如何去管理那样, 使用父component组件允许更明确的控制以及更好的封装, 但是使用子component组件使得依赖注入在花费的代价上更为简单</p>
+<ul>
+<li><strong>两个相互依赖的组件不能共享同一范围.</strong> 举例来说, 两个组件不能同时使用 <code>@Singleton</code>注解 标注作用域, 这个限制是有<a href="https://github.com/google/dagger/issues/107#issuecomment-71073298" target="_blank" rel="external">这里</a>描述的原因导致的, 相关的组件需要定义它们自己的范围.</li>
+</ul>
+<h2 id="依赖组件"><a href="#依赖组件" class="headerlink" title="依赖组件"></a>依赖组件</h2><p><img src="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_dependency.png" alt="Dependent Components"></p>
+<p>举例来说, 如果我们想要使用 用户会话的整个生命周期<br>我们可以声明我们自己的 <code>@UserScope</code>接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</div><div class="line"><span class="keyword">import</span> javax.inject.Scope;</div><div class="line"></div><div class="line"><span class="meta">@Scope</span></div><div class="line"><span class="keyword">public</span> <span class="meta">@interface</span> UserScope &#123;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>然后, 我们声明它的父组件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="meta">@Component</span>(modules=&#123;AppModule.class, NetModule.class&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NetComponent</span> </span>&#123;</div><div class="line">    <span class="comment">// downstream components need these exposed with the return type</span></div><div class="line">    <span class="comment">// method name does not really matter</span></div><div class="line">    <span class="function">Retrofit <span class="title">retrofit</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们可以接着声明它的子组件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@UserScope</span> <span class="comment">// using the previously defined scope, note that @Singleton will not work</span></div><div class="line"><span class="meta">@Component</span>(dependencies = NetComponent.class, modules = GitHubModule.class)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubComponent</span> </span>&#123;</div><div class="line">    <span class="function"><span class="keyword">void</span> <span class="title">inject</span><span class="params">(MainActivity activity)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们假设下面的Github模块简单的返回一个Github Api的接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">GitHubModule</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">GitHubApiInterface</span> </span>&#123;</div><div class="line">      <span class="meta">@GET</span>(<span class="string">"/org/&#123;orgName&#125;/repos"</span>)</div><div class="line">      Call&lt;ArrayList&lt;Repository&gt;&gt; getRepository(<span class="meta">@Path</span>(<span class="string">"orgName"</span>) String orgName);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span></div><div class="line">    <span class="meta">@UserScope</span> <span class="comment">// needs to be consistent with the component scope</span></div><div class="line">    <span class="function"><span class="keyword">public</span> GitHubApiInterface <span class="title">providesGitHubInterface</span><span class="params">(Retrofit retrofit)</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> retrofit.create(GitHubApiInterface.class);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>为了<code>GitHubModule.java</code>获得<code>Retrofit</code>实例的引用, 我们需要在调用它之前的组件中明确定义它们, 如果说在它之后执行注入, 它们应该在之后的组件中移除它们:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="meta">@Component</span>(modules=&#123;AppModule.class, NetModule.class&#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">NetComponent</span> </span>&#123;</div><div class="line">    <span class="comment">// remove injection methods if downstream modules will perform injection</span></div><div class="line"></div><div class="line">    <span class="comment">// downstream components need these exposed</span></div><div class="line">    <span class="function">Retrofit <span class="title">retrofit</span><span class="params">()</span></span>;</div><div class="line">    <span class="function">OkHttpClient <span class="title">okHttpClient</span><span class="params">()</span></span>;</div><div class="line">    <span class="function">SharedPreferences <span class="title">sharedPreferences</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后一步是使用<code>GitHubComponent</code> 执行实例化, 这个时候, 我们首先需要构建<code>NetComponent</code>, 并且在<code>DaggerGitHubComponent</code> builder的构造函数中传递它: </p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">NetComponent mNetComponent = DaggerNetComponent.builder()</div><div class="line">                .appModule(<span class="keyword">new</span> AppModule(<span class="keyword">this</span>))</div><div class="line">                .netModule(<span class="keyword">new</span> NetModule(<span class="string">"https://api.github.com"</span>))</div><div class="line">                .build();</div><div class="line"></div><div class="line">GitHubComponent gitHubComponent = DaggerGitHubComponent.builder()</div><div class="line">                .netComponent(mNetComponent)</div><div class="line">                .gitHubModule(<span class="keyword">new</span> GitHubModule())</div><div class="line">                .build();</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/codepath/dagger2-example" target="_blank" rel="external">this example code </a></p>
+<p>子组件</p>
+<p><img src="https://raw.githubusercontent.com/codepath/android_guides/master/images/dagger_subcomponent.png" alt="Subcomponents"></p>
+<p>使用子组件是扩展组件的对象图的另外一种方式, 就像依赖的组件那样, 子组件有它们自己的生命周期并且当所有子组件的引用都消失的时候是可以被垃圾收集的, 并具有相同的范围限制。在使用这种方法的一个优点是，不需要定义所有下游组件. </p>
+<p>另一个主要的不同之处就是子组件只需要在父组件中声明. </p>
+<p>这里有一个为Activity使用子组件的例子. 我们使用自定义的范围和<code>@Subcomponent</code>注解标注一个类</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@MyActivityScope</span></div><div class="line"><span class="meta">@Subcomponent</span>(modules=&#123; MyActivityModule.class &#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyActivitySubComponent</span> </span>&#123;</div><div class="line">    <span class="meta">@Named</span>(<span class="string">"my_list"</span>) <span class="function">ArrayAdapter <span class="title">myListAdapter</span><span class="params">()</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>moudle模块使用下面声明</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Module</span></div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">MyActivityModule</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">final</span> MyActivity activity;</div><div class="line"></div><div class="line">    <span class="comment">// must be instantiated with an activity</span></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="title">MyActivityModule</span><span class="params">(MyActivity activity)</span> </span>&#123; <span class="keyword">this</span>.activity = activity; &#125;</div><div class="line"></div><div class="line">    <span class="meta">@Provides</span> <span class="meta">@MyActivityScope</span> <span class="meta">@Named</span>(<span class="string">"my_list"</span>)</div><div class="line">    <span class="function"><span class="keyword">public</span> ArrayAdapter <span class="title">providesMyListAdapter</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">new</span> ArrayAdapter&lt;String&gt;(activity, android.R.layout.my_list);</div><div class="line">    &#125;</div><div class="line">    ...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最后, 在父组件中, 我们声明一个工厂方法</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="meta">@Component</span>(modules=&#123; ... &#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyApplicationComponent</span> </span>&#123;</div><div class="line">    <span class="comment">// injection targets here</span></div><div class="line"></div><div class="line">    <span class="comment">// factory method to instantiate the subcomponent defined here (passing in the module instance)</span></div><div class="line">    <span class="function">MyActivitySubComponent <span class="title">newMyActivitySubcomponent</span><span class="params">(MyActivityModule activityModule)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>在上面的例子中, <code>newMyActivitySubcomponent()</code>每次被调用的时候, 一个新的子组件的实例都会被创建, 使用子模块moudle注入到一个activity</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="meta">@Singleton</span></div><div class="line"><span class="meta">@Component</span>(modules=&#123; ... &#125;)</div><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">MyApplicationComponent</span> </span>&#123;</div><div class="line">    <span class="comment">// injection targets here</span></div><div class="line"></div><div class="line">    <span class="comment">// factory method to instantiate the subcomponent defined here (passing in the module instance)</span></div><div class="line">    <span class="function">MyActivitySubComponent <span class="title">newMyActivitySubcomponent</span><span class="params">(MyActivityModule activityModule)</span></span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>子组件创建</p>
+<p><img src="https://raw.githubusercontent.com/codepath/android_guides/master/images/subcomponent_builders.png" alt="Available starting in v2.7"></p>
+
+        
+        </div>
+        <footer class="article-footer">
+            <div class="share-container">
+
+
+
+</div>
+
+    <a data-url="http://yoursite.com/2017/05/02/Dagger2/" data-id="cj4qe5a0h00058v5j74eokmkx" class="article-share-link"><i class="fa fa-share"></i>Share</a>
+<script>
+    (function ($) {
+        // Prevent duplicate binding
+        if (typeof(__SHARE_BUTTON_BINDED__) === 'undefined' || !__SHARE_BUTTON_BINDED__) {
+            __SHARE_BUTTON_BINDED__ = true;
+        } else {
+            return;
+        }
+        $('body').on('click', function() {
+            $('.article-share-box.on').removeClass('on');
+        }).on('click', '.article-share-link', function(e) {
+            e.stopPropagation();
+
+            var $this = $(this),
+                url = $this.attr('data-url'),
+                encodedUrl = encodeURIComponent(url),
+                id = 'article-share-box-' + $this.attr('data-id'),
+                offset = $this.offset(),
+                box;
+
+            if ($('#' + id).length) {
+                box = $('#' + id);
+
+                if (box.hasClass('on')){
+                    box.removeClass('on');
+                    return;
+                }
+            } else {
+                var html = [
+                    '<div id="' + id + '" class="article-share-box">',
+                        '<input class="article-share-input" value="' + url + '">',
+                        '<div class="article-share-links">',
+                            '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="fa fa-twitter article-share-twitter" target="_blank" title="Twitter"></a>',
+                            '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="fa fa-facebook article-share-facebook" target="_blank" title="Facebook"></a>',
+                            '<a href="http://pinterest.com/pin/create/button/?url=' + encodedUrl + '" class="fa fa-pinterest article-share-pinterest" target="_blank" title="Pinterest"></a>',
+                            '<a href="https://plus.google.com/share?url=' + encodedUrl + '" class="fa fa-google article-share-google" target="_blank" title="Google+"></a>',
+                        '</div>',
+                    '</div>'
+                ].join('');
+
+              box = $(html);
+
+              $('body').append(box);
+            }
+
+            $('.article-share-box.on').hide();
+
+            box.css({
+                top: offset.top + 25,
+                left: offset.left
+            }).addClass('on');
+
+        }).on('click', '.article-share-box', function (e) {
+            e.stopPropagation();
+        }).on('click', '.article-share-box-input', function () {
+            $(this).select();
+        }).on('click', '.article-share-box-link', function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+
+            window.open(this.href, 'article-share-box-window-' + Date.now(), 'width=500,height=450');
+        });
+    })(jQuery);
+</script>
+
+            
+    
+        <a href="http://yoursite.com/2017/05/02/Dagger2/#comments" class="article-comment-link disqus-comment-count" data-disqus-url="http://yoursite.com/2017/05/02/Dagger2/">Comments</a>
+    
+
+        </footer>
+    </div>
+    
+        
+<nav id="article-nav">
+    
+        <a href="/2017/05/02/hello-world/" id="article-nav-newer" class="article-nav-link-wrap">
+            <strong class="article-nav-caption">Newer</strong>
+            <div class="article-nav-title">
+                
+                    Hello World
+                
+            </div>
+        </a>
+    
+    
+</nav>
+
+
+    
+</article>
+
+
+    
+    <section id="comments">
+    
+        
+    <div id="disqus_thread">
+        <noscript>Please enable JavaScript to view the <a href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    </div>
+
+    
+    </section>
+
+</section>
+            
+                <aside id="sidebar">
+   
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">recent</h3>
+        <div class="widget">
+            <ul id="recent-post" class="">
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/12/Android-拷贝资源文件到sd-card/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/12/Android-拷贝资源文件到sd-card/" class="title">Android 拷贝资源文件到sd card</a></p>
+                            <p class="item-date"><time datetime="2017-05-12T03:50:10.000Z" itemprop="datePublished">2017-05-12</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/09/ArrayList-LinkedList源码分析/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/09/ArrayList-LinkedList源码分析/" class="title">ArrayList LinkedList源码分析</a></p>
+                            <p class="item-date"><time datetime="2017-05-09T04:10:59.000Z" itemprop="datePublished">2017-05-09</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/08/detection-the-largest-retangle/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/08/detection-the-largest-retangle/" class="title">detection the largest retangle , OpenCv 检测最大矩形</a></p>
+                            <p class="item-date"><time datetime="2017-05-08T10:42:01.000Z" itemprop="datePublished">2017-05-08</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/06/Opencv-In-Android/" class="thumbnail">
+    
+    
+        <span style="background-image:url(https://cdn-images-1.medium.com/max/2000/1*LgaStRUic1JjYfhdYplClg.jpeg)" alt="Opencv In Android" class="thumbnail-image"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/06/Opencv-In-Android/" class="title">Opencv In Android</a></p>
+                            <p class="item-date"><time datetime="2017-05-06T07:17:39.000Z" itemprop="datePublished">2017-05-06</time></p>
+                        </div>
+                    </li>
+                
+                    <li>
+                        
+                        <div class="item-thumbnail">
+                            <a href="/2017/05/04/Jenkins/" class="thumbnail">
+    
+    
+        <span class="thumbnail-image thumbnail-none"></span>
+    
+</a>
+
+                        </div>
+                        
+                        <div class="item-inner">
+                            <p class="item-category"></p>
+                            <p class="item-title"><a href="/2017/05/04/Jenkins/" class="title">Jenkins CI</a></p>
+                            <p class="item-date"><time datetime="2017-05-04T03:57:13.000Z" itemprop="datePublished">2017-05-04</time></p>
+                        </div>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+    
+        
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">archives</h3>
+        <div class="widget">
+            <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a><span class="archive-list-count">8</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tags</h3>
+        <div class="widget">
+            <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Android/">Android</a><span class="tag-list-count">6</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/C/">C++</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Ci/">Ci</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Data-structure/">Data structure</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/JNI/">JNI</a><span class="tag-list-count">2</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/">Java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Jenkins/">Jenkins</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/NDK/">NDK</a><span class="tag-list-count">3</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Opencv/">Opencv</a><span class="tag-list-count">2</span></li></ul>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap">
+        <h3 class="widget-title">tag cloud</h3>
+        <div class="widget tagcloud">
+            <a href="/tags/Android/" style="font-size: 20px;">Android</a> <a href="/tags/C/" style="font-size: 13.33px;">C++</a> <a href="/tags/Ci/" style="font-size: 10px;">Ci</a> <a href="/tags/Data-structure/" style="font-size: 10px;">Data structure</a> <a href="/tags/JNI/" style="font-size: 13.33px;">JNI</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/Jenkins/" style="font-size: 10px;">Jenkins</a> <a href="/tags/NDK/" style="font-size: 16.67px;">NDK</a> <a href="/tags/Opencv/" style="font-size: 13.33px;">Opencv</a>
+        </div>
+    </div>
+
+    
+        
+    <div class="widget-wrap widget-list">
+        <h3 class="widget-title">links</h3>
+        <div class="widget">
+            <ul>
+                
+                    <li>
+                        <a href="http://hexo.io">Hexo</a>
+                    </li>
+                
+            </ul>
+        </div>
+    </div>
+
+
+    
+    <div id="toTop" class="fa fa-angle-up"></div>
+</aside>
+            
+        </div>
+        <footer id="footer">
+    <div class="outer">
+        <div id="footer-info" class="inner">
+            &copy; 2017 John Doe<br>
+            Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>. Theme by <a href="http://github.com/ppoffice">PPOffice</a>
+        </div>
+    </div>
+</footer>
+        
+    
+    <script>
+    var disqus_config = function () {
+        
+            this.page.url = 'http://yoursite.com/2017/05/02/Dagger2/';
+        
+        this.page.identifier = 'Dagger2';
+    };
+    (function() { 
+        var d = document, s = d.createElement('script');  
+        s.src = '//' + 'hexo-theme-icarus' + '.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+
+
+
+
+    
+        <script src="/libs/lightgallery/js/lightgallery.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-thumbnail.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-pager.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-autoplay.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-fullscreen.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-zoom.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-hash.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-share.min.js"></script>
+        <script src="/libs/lightgallery/js/lg-video.min.js"></script>
+    
+    
+        <script src="/libs/justified-gallery/jquery.justifiedGallery.min.js"></script>
+    
+    
+
+
+
+<!-- Custom Scripts -->
+<script src="/js/main.js"></script>
+
+    </div>
+</body>
+</html>
