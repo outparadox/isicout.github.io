@@ -4,6 +4,8 @@ date: 2017-05-08 18:42:01
 tags:  [Opencv, Android,  C++, NDK]
 ---
 
+
+``` c++
 using namespace cv;
 using namespace std;
 extern "C" {
@@ -13,6 +15,7 @@ jstring Java_com_martin_huanjulu_testopencv_MainActivity_stringFromJNI(
     std::string hello = "Hello from C++";
     return env->NewStringUTF(hello.c_str());
 }
+```
 <!-- more -->
 
 ``` c++ 
