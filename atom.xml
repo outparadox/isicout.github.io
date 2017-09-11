@@ -86,9 +86,9 @@
     
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
-      <category term="Opencv" scheme="http://yoursite.com/tags/Opencv/"/>
-    
       <category term="NDK" scheme="http://yoursite.com/tags/NDK/"/>
+    
+      <category term="Opencv" scheme="http://yoursite.com/tags/Opencv/"/>
     
       <category term="C++" scheme="http://yoursite.com/tags/C/"/>
     
@@ -116,11 +116,11 @@
     
       <category term="Android" scheme="http://yoursite.com/tags/Android/"/>
     
-      <category term="Opencv" scheme="http://yoursite.com/tags/Opencv/"/>
-    
       <category term="NDK" scheme="http://yoursite.com/tags/NDK/"/>
     
       <category term="JNI" scheme="http://yoursite.com/tags/JNI/"/>
+    
+      <category term="Opencv" scheme="http://yoursite.com/tags/Opencv/"/>
     
       <category term="C++" scheme="http://yoursite.com/tags/C/"/>
     
